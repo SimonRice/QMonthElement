@@ -79,11 +79,11 @@
         dateForSection = NSDate.date;
     }
 	QSection *section = [[QSection alloc] initWithTitle:@"\n\n"];
-        QMonthInlineElement *dateElement = (QMonthInlineElement *) [[QMonthInlineElement alloc] initWithKey:@"date"];
-        dateElement.dateValue = dateForSection;
-        dateElement.centerLabel = YES;
-        dateElement.hiddenToolbar = YES;
-        [section addElement:dateElement];
+    QMonthInlineElement *dateElement = (QMonthInlineElement *) [[QMonthInlineElement alloc] initWithKey:@"date"];
+    dateElement.dateValue = dateForSection;
+    dateElement.centerLabel = YES;
+    dateElement.hiddenToolbar = YES;
+    [section addElement:dateElement];
     [self addSection:section];
 }
 
