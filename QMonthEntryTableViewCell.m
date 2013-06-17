@@ -1,5 +1,5 @@
 //
-// Copyright 2011-2012 ESCOZ Inc  - http://escoz.com, Simon Rice - http://www.simonrice.com
+// Copyright 2011-2013 ESCOZ Inc  - http://escoz.com, Simon Rice - http://www.simonrice.com
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
 // file except in compliance with the License. You may obtain a copy of the License at
@@ -31,18 +31,15 @@ SRMonthPicker *QMONTHENTRY_GLOBAL_PICKER;
     return self;
 }
 
-+ (SRMonthPicker *)getPickerForDateWithElement:(QMonthInlineElement*)element {
-    NSDate *date = [NSDate date];
-    if (element && element.dateValue)
-        date = element.dateValue;
-    QMONTHENTRY_GLOBAL_PICKER = [[SRMonthPicker alloc] initWithDate:date];
++ (SRMonthPicker *)getPickerForDate {
+    QMONTHENTRY_GLOBAL_PICKER = [[SRMonthPicker alloc] init];
     return QMONTHENTRY_GLOBAL_PICKER;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [super textFieldDidEndEditing:textField];
     self.selected = NO;
-    [_pickerView removeObserver:self forKeyPath:@"date"];
+    _pickerView.delegate = nil;
     _pickerView = nil;
     
 }
@@ -50,23 +47,18 @@ SRMonthPicker *QMONTHENTRY_GLOBAL_PICKER;
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     QMonthInlineElement *const element = ((QMonthInlineElement *) _entryElement);
     
-    _pickerView = [QMonthEntryTableViewCell getPickerForDateWithElement:element];
+    _pickerView = [QMonthEntryTableViewCell getPickerForDate];
     _pickerView.showsSelectionIndicator = YES;
     [_pickerView sizeToFit];
+    _pickerView.monthPickerDelegate = self;
     _textField.inputView = _pickerView;
-    [_pickerView addObserver:self forKeyPath:@"date" options:NSKeyValueObservingOptionNew context:nil];
     _pickerView.maximumYear = element.maximumYear;
     _pickerView.minimumYear = element.minimumYear;
-    if (element.dateValue)
+    if (element.dateValue != nil)
         _pickerView.date = element.dateValue;
     
     [super textFieldDidBeginEditing:textField];
     self.selected = YES;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    [self dateChanged:object];
 }
 
 - (void)createSubviews {
@@ -83,13 +75,12 @@ SRMonthPicker *QMONTHENTRY_GLOBAL_PICKER;
     [self.contentView addSubview:self.centeredLabel];
 }
 
-- (void) dateChanged:(id)sender{
+- (void)monthPickerDidChangeDate:(SRMonthPicker *)monthPicker {
     QMonthInlineElement *const element = ((QMonthInlineElement *) _entryElement);
-    element.dateValue = _pickerView.date;
+    element.dateValue = monthPicker.date;
     [self prepareForElement:_entryElement inTableView:_quickformTableView];
-    if (element.onValueChanged)
-        element.onValueChanged();
-    
+    if (element.onValueChanged!=nil)
+        element.onValueChanged(_entryElement);
 }
 
 - (void)prepareForElement:(QEntryElement *)element inTableView:(QuickDialogTableView *)tableView {

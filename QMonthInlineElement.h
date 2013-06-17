@@ -34,6 +34,4 @@
 
 - (QMonthInlineElement *)initWithTitle:(NSString *)string date:(NSDate *)date;
 
-@property(nonatomic, copy) void (^onValueChanged)(void);
-
 @end

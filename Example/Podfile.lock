@@ -1,0 +1,20 @@
+PODS:
+  - QMonthElement (0.1.0):
+    - QuickDialog (~> 0.5)
+    - SRMonthPicker
+  - QuickDialog (0.8)
+  - SRMonthPicker (0.2.8)
+
+DEPENDENCIES:
+  - QMonthElement (from `../.`)
+
+EXTERNAL SOURCES:
+  QMonthElement:
+    :path: ../.
+
+SPEC CHECKSUMS:
+  QMonthElement: 3d7ae0cfac86b596484dadcdfb3cac249bc71f44
+  QuickDialog: 465692c7c599ad41a0c46022c55779dd61a4d4fe
+  SRMonthPicker: 6632c8f727b2e0628422a9c1487956c9ac054b4f
+
+COCOAPODS: 0.20.2

@@ -1,5 +1,5 @@
 //
-// Copyright 2011-2012 ESCOZ Inc  - http://escoz.com, Simon Rice - http://www.simonrice.com
+// Copyright 2011-2013 ESCOZ Inc  - http://escoz.com, Simon Rice - http://www.simonrice.com
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
 // file except in compliance with the License. You may obtain a copy of the License at
@@ -17,11 +17,12 @@
 
 
 #import "QMonthElement.h"
-#import "QMonthInlineElement.h"
 
 
 @interface QMonthElement ()
+
 - (void)initializeRoot;
+- (void)updateElements;
 
 @end
 
@@ -31,18 +32,17 @@
 
 - (void)setDateValue:(NSDate *)date {
     _dateValue = date;
-    self.sections = nil;
-    [self initializeRoot];
+    [self updateElements];
 }
 
 - (void)setTicksValue:(NSNumber *)ticks {
-    [self setDateValue:[NSDate dateWithTimeIntervalSince1970:ticks.doubleValue]];
+    if (ticks!=nil)
+        [self setDateValue:[NSDate dateWithTimeIntervalSince1970:ticks.doubleValue]];
 }
 
 -(NSNumber *)ticksValue {
     return [NSNumber numberWithDouble:[self.dateValue timeIntervalSince1970]];
 }
-
 
 - (QMonthElement *)init {
     self = [super init];
@@ -52,8 +52,9 @@
 }
 
 - (QMonthElement *)initWithTitle:(NSString *)title date:(NSDate *)date {
-    self = [self init];
+    self = [super init];
     if (self!=nil){
+        _grouped = YES;
 		_title = title;
         _dateValue = date;
         [self initializeRoot];
@@ -72,19 +73,32 @@
     return cell;
 }
 
+- (NSInteger)numberOfSections {
+    return 1;
+}
 
 - (void)initializeRoot {
     NSDate *dateForSection = _dateValue;
-    if (dateForSection==nil){
+    if (dateForSection==nil)
         dateForSection = NSDate.date;
-    }
-	QSection *section = [[QSection alloc] initWithTitle:@"\n\n"];
+        
+    QSection *section = [[QSection alloc] initWithTitle:@"\n\n"];
     QMonthInlineElement *dateElement = (QMonthInlineElement *) [[QMonthInlineElement alloc] initWithKey:@"date"];
     dateElement.dateValue = dateForSection;
     dateElement.centerLabel = YES;
     dateElement.hiddenToolbar = YES;
     [section addElement:dateElement];
     [self addSection:section];
+}
+
+- (void)updateElements
+{
+    QMonthInlineElement *monthElement = (QMonthInlineElement *)[self elementWithKey:@"date"];
+    
+    NSDate *dateForElement = (_dateValue == nil) ? NSDate.date : _dateValue;
+    
+    if (monthElement != nil) 
+        monthElement.dateValue = dateForElement;
 }
 
 - (void)fetchValueIntoObject:(id)obj {
@@ -94,7 +108,6 @@
 }
 
 - (void)selected:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller indexPath:(NSIndexPath *)indexPath {
-    
     if (self.sections==nil)
         return;
     
@@ -102,7 +115,7 @@
     newController.quickDialogTableView.scrollEnabled = NO;
     [controller displayViewController:newController];
     
-	__block QuickDialogController *controllerForBlock = newController;
+	__weak QuickDialogController *controllerForBlock = newController;
     
     newController.willDisappearCallback = ^{
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -117,7 +130,6 @@
     };
     
     [newController.quickDialogTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-    
 }
 
 

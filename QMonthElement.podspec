@@ -8,6 +8,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/simonrice/QMonthElement.git", :tag => "0.1.0" }
   s.platform     = :ios
   s.source_files = "*.{h,m}"
+  s.requires_arc = true
   s.dependency "QuickDialog", "~> 0.5"
   s.dependency "SRMonthPicker"
 end

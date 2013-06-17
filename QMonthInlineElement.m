@@ -30,12 +30,14 @@
 - (QMonthInlineElement *)init {
     self = [super init];
     _dateValue = [NSDate date];
+    self.keepSelected = YES;
     return self;
 }
 
 - (QMonthInlineElement *)initWithKey:(NSString *)key {
     self = [super initWithKey:key];
     _dateValue = [NSDate date];
+    self.keepSelected = YES;
     return self;
 }
 
@@ -47,9 +49,13 @@
     return self;
 }
 
-
 - (void)setTicksValue:(NSNumber *)ticks {
-    self.dateValue = [NSDate dateWithTimeIntervalSince1970:ticks.doubleValue];
+    if (ticks!=nil)
+        self.dateValue = [NSDate dateWithTimeIntervalSince1970:ticks.doubleValue];
+}
+
+- (void)setDateValue:(NSDate *)date {
+    _dateValue = date;
 }
 
 -(NSNumber *)ticksValue {
