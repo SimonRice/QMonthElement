@@ -31,13 +31,10 @@
     QDateTimeInlineElement *dateInline = [[QDateTimeInlineElement alloc] initWithTitle:@"Date Inline Element"
                                                                                   date:[NSDate date]
                                                                                andMode:UIDatePickerModeDate];
-    QDateTimeElement *date = [[QDateTimeElement alloc] initWithTitle:@"Date Element" date:[NSDate date]];
-    date.mode = UIDatePickerModeDate;
     
     [root addSection:section];
     [section addElement:month];
     [section addElement:monthInline];
-    [section addElement:date];
     [section addElement:dateInline];
     self.root = root;
 }

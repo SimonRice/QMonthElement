@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.source_files = "*.{h,m}"
   s.requires_arc = true
-  s.dependency "QuickDialog", "~> 0.5"
+  s.ios.deployment_target = "5.0"
+  s.dependency "QuickDialog", "~> 0.9"
   s.dependency "SRMonthPicker"
 end
