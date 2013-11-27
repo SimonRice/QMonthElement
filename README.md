@@ -1,7 +1,7 @@
 # QMonthElement
 
-[![CocoaPods Platform](http://cocoapod-badges.herokuapp.com/p/QMonthElement/badge.png)](http://cocoadocs.org/docsets/QMonthElement) 
-[![CocoaPods Version](http://cocoapod-badges.herokuapp.com/v/QMonthElement/badge.png)](http://cocoadocs.org/docsets/QMonthElement) 
+[![CocoaPods Platform](https://cocoapod-badges.herokuapp.com/p/QMonthElement/badge.png)](http://cocoadocs.org/docsets/QMonthElement) 
+[![CocoaPods Version](https://cocoapod-badges.herokuapp.com/v/QMonthElement/badge.png)](http://cocoadocs.org/docsets/QMonthElement) 
 
 This is a plugin for [QuickDialog](http://escoz.com/open-source/quickdialog) (v0.9) that allows you to have an element with a month picker.  This month picker is implemented in [SRMonthPicker](https://github.com/simonrice/SRMonthPicker).  Implementation & usage is kept as similar as possible to QuickDialog's `QDateTimeElement`
 
